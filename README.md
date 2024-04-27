@@ -7,3 +7,6 @@ To run:
  - ```pip install -r backend/requirements.txt```
  - ```npm run --prefix TicTacToeWebApp dev```
  - ```python3 -m flask --app backend/tictactoe_backend run```
+
+To build backend wheel:
+ - ```python3 -m build --wheel backend ```
