@@ -1,0 +1,13 @@
+[project]
+name = "tictactoe_backend"
+version = "1.0.0"
+description = "Backend for tic tac toe"
+dependencies = [
+    "flask",
+    "flask-socketio",
+    "flask-cors"
+]
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"

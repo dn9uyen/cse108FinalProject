@@ -4,17 +4,15 @@ import { io } from 'socket.io-client'
 function App() {
 
     function sendSocket() {
-        let socket = io();
-        socket.on('connectEvent', () => {
-            socket.emit('testData', { data: 'I\'m connected!' });
+        var socket = io("http://127.0.0.1:5000/");
+        socket.on('connect', function() {
+            socket.emit('my event', { data: 'I\'m connected!' });
         });
-        console.log("Connected")
-        return "1"
     }
 
     return (
         <>
-            <button onClick={ ()=>sendSocket() }>Send data</button>
+            <button onClick={() => sendSocket()}>Send data</button>
         </>
     )
 }
