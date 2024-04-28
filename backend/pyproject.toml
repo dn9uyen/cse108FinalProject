@@ -6,7 +6,8 @@ dependencies = [
     "flask",
     "flask-socketio",
     "flask-cors",
-    "flas-login"
+    "flask-login",
+    "flask-sqlalchemy"
 ]
 
 [build-system]
