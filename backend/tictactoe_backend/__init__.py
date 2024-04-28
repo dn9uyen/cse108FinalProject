@@ -1,8 +1,10 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_socketio import SocketIO
+from flask_login import LoginManager
 
 socketio = SocketIO(cors_allowed_origins="*")
+login_manager = LoginManager()
 
 
 def create_app():
@@ -20,5 +22,7 @@ def create_app():
     from tictactoe_backend.lobby import lobby_bp
     app.register_blueprint(lobby_bp)
 
+    login_manager.init_app(app)
     socketio.init_app(app)
+
     return app

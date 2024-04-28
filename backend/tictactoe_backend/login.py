@@ -1,4 +1,5 @@
 from flask import Blueprint
+from tictactoe_backend import login_manager
 
 login_bp = Blueprint("login", __name__)
 

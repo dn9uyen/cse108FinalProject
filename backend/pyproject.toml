@@ -5,7 +5,8 @@ description = "Backend for tic tac toe"
 dependencies = [
     "flask",
     "flask-socketio",
-    "flask-cors"
+    "flask-cors",
+    "flas-login"
 ]
 
 [build-system]
