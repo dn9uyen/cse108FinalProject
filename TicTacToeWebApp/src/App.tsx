@@ -15,11 +15,17 @@ function App() {
         socket.emit('doTurn', { gameId: "12333" });
     }
 
+    function sendMessage() {
+        var socket = io("http://127.0.0.1:5000/game");
+        socket.emit('sendMessage', { gameId: "12333", message:"hello everyone" });
+    }
+
 
     return (
         <>
             <button onClick={() => sendSocket()}>Connect to room</button>
             <button onClick={() => doTurn()}>Do turn</button>
+            <button onClick={() => sendMessage()}>Send chat</button>
         </>
     )
 }
