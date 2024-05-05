@@ -4,15 +4,22 @@ import { io } from 'socket.io-client'
 function App() {
 
     function sendSocket() {
-        var socket = io("http://127.0.0.1:5000/lobby");
+        var socket = io("http://127.0.0.1:5000/game");
         socket.on('connect', function() {
-            socket.emit('my event', { data: 'I\'m connected!' });
+            socket.emit('joinGame', { gameId: "12333" });
         });
     }
 
+    function doTurn() {
+        var socket = io("http://127.0.0.1:5000/game");
+        socket.emit('doTurn', { gameId: "12333" });
+    }
+
+
     return (
         <>
-            <button onClick={() => sendSocket()}>Send data</button>
+            <button onClick={() => sendSocket()}>Connect to room</button>
+            <button onClick={() => doTurn()}>Do turn</button>
         </>
     )
 }
