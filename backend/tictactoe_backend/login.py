@@ -1,5 +1,5 @@
-from flask import Blueprint, request, redirect, url_for
-from flask_login import login_user, logout_user, login_required
+from flask import Blueprint, request, jsonify
+from flask_login import current_user, login_user, logout_user, login_required
 from .models import User
 
 
@@ -9,25 +9,37 @@ login_bp = Blueprint("login", __name__)
 @login_bp.route("/")
 @login_required
 def index():
-    return "login page"
+    if not current_user.is_authenticated:
+        return jsonify({"error": "Unauthorized"}), 401
+    return jsonify({"message": "User is logged in."}), 200
 
 
-@login_bp.route("/login", methods=["POST"])
+@login_bp.route("/page")
+@login_required
+def page_view():
+    if not current_user.is_authenticated:
+        return jsonify({"error": "Unauthorized"}), 401
+    return jsonify({"message": "User is logged in."}), 200
+
+
+@login_bp.route("/login", methods=['GET', 'POST'])
 def login():
-    username = request.form.get("username")
-    password = request.form.get("password")
+    data = request.json
+    username = data.get("username")
+    password = data.get("password")
 
     user = User.query.filter_by(username=username).first()
 
     if user and user.verify_password(password):
         login_user(user)
-        # far more concise than frontend redirecting
-        return redirect(url_for("lobby.lobbyPageExample"))
+        return jsonify({"message": "Logged in successfully"}), 200
     else:
-        return "Invalid username and or password"
+        return jsonify({"error": "Invalid username and or password."}), 400
 
 
 @login_bp.route("/logout")
+@login_required
 def logout():
     logout_user()
-    return redirect(url_for("login page"))
+    print("loaded user")
+    return jsonify({"message": "successfully logged out."}), 200

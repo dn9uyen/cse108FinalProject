@@ -1,12 +1,10 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_socketio import SocketIO
-from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
+from .models import db, login_manager
+
 
 socketio = SocketIO(cors_allowed_origins="*")
-login_manager = LoginManager()
-db = SQLAlchemy()
 
 
 def create_app():
@@ -19,8 +17,10 @@ def create_app():
     )
     CORS(app)
 
-    # initialize db
+    # init db and create tables
     db.init_app(app)
+    with app.app_context():
+        db.create_all()
 
     # Register blueprints
     from .login import login_bp

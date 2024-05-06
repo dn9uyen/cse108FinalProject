@@ -1,19 +1,20 @@
-from flask import Blueprint, request, redirect, url_for
+from flask import Blueprint, request, jsonify
 from .models import db, User
 
 register_bp = Blueprint('register', __name__)
 
 
-@register_bp.route("/register", methods=['POST'])
+@register_bp.route("/register", methods=['GET', 'POST'])
 def register():
-    username = request.form.get("username")
-    password = request.form.get("password")
+    data = request.json
+    username = data.get("username")
+    password = data.get("password")
 
     if User.query.filter_by(username=username).first():
-        return "Username already exists"
+        return jsonify({"message": "Username already exists"}), 403
 
     new_user = User(username=username, password=password)
     db.session.add(new_user)
     db.session.commit()
 
-    return redirect(url_for("login page"))
+    return jsonify({"message": "Registration successful"}), 200
