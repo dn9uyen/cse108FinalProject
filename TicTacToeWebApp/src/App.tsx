@@ -3,8 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Login from "./pages/login/login.tsx";
 import Register from "./pages/login/register.tsx";
 import Page from "./pages/testpage/page.tsx";
-import Game from './pages/testpage/Game.tsx'; // check these
-import Game from './pages/Game'; // check these
+import Game from './pages/Game';
 
 function App() {
 
@@ -12,7 +11,6 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path="/">
-
                     <Route index element={<Login />} />
                     <Route path="register" element={<Register />} />
                     <Route path="page" element={<Page />} />

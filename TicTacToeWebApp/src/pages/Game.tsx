@@ -1,5 +1,4 @@
 import { Box, Paper } from "@mui/material";
-import GameBoard from "../components/GameBoard";
 import ChatBox from "../components/ChatBox";
 import { useEffect, useState } from "react";
 import { socket } from "../socket"
@@ -7,6 +6,7 @@ import { ConnectionManager } from "../components/ConnectionManager";
 
 export default function Game() {
     let [chat, setChat] = useState([]);
+    const [board, setBoard] = useState(Array(9).fill(null));
     const gameId = "123"
 
     useEffect(() => {
@@ -37,6 +37,17 @@ export default function Game() {
         socket.emit('doTurn', { gameId: "123" });
     }
 
+    function handleClick(index: number) {
+        const newBoard = [...board];
+        // Check if the cell is empty
+        if (!newBoard[index]) {
+            newBoard[index] = "X"; // For now, assuming the player is always X
+            setBoard(newBoard);
+            // Here you may want to emit the new board state to the server
+        }
+    }
+
+
     return (
         <Box sx={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Paper>
@@ -46,7 +57,11 @@ export default function Game() {
                 <br></br>
                 <ChatBox chat={chat} />
                 <br></br>
-                <GameBoard />
+                <div className="board">
+                    {board.map((cell, index) => (
+                        <button key={index} onClick={() => handleClick(index)}>{cell}</button>
+                    ))}
+                </div>
             </Paper>
 
         </Box>
