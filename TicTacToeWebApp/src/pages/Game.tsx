@@ -33,10 +33,6 @@ export default function Game() {
         };
     }, []);
 
-    function doTurn() {
-        socket.emit('doTurn', { gameId: "123" });
-    }
-
     function handleClick(index: number) {
         const newBoard = [...board];
         // Check if the cell is empty
@@ -44,6 +40,7 @@ export default function Game() {
             newBoard[index] = "X"; // For now, assuming the player is always X
             setBoard(newBoard);
             // Here you may want to emit the new board state to the server
+            socket.emit("turnSubmit", {gameId: gameId})
         }
     }
 
@@ -53,7 +50,6 @@ export default function Game() {
             <Paper>
                 <p>game page</p>
                 <ConnectionManager />
-                <button onClick={() => doTurn()}>Do turn</button>
                 <br></br>
                 <ChatBox chat={chat} />
                 <br></br>

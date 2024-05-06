@@ -1,7 +1,7 @@
-from flask import Blueprint, request
+from flask import Blueprint, json
 from flask_socketio import join_room, send, emit
 
-import socketio
+from .__init__ import socketio
 from .gamemanager import GameManager
 
 game_bp = Blueprint("game", __name__)
@@ -19,6 +19,21 @@ def check_win(board):
         if board[condition[0]] == board[condition[1]] == board[condition[2]] is not None:
             return True
     return False
+
+
+@socketio.on("lobbyRequest", namespace="/lobby")
+def lobbyRequest():
+    data = '''{
+                {
+                  players: ["p1", "p2"],
+                  lobbyId: "123",
+                },
+                {
+                  players: ["p3", "p4"],
+                  lobbyId: "321",
+                }
+              }'''
+    emit(json.loads(data))
 
   
 @socketio.on('joinGame', namespace='/game')
