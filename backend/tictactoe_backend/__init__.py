@@ -25,13 +25,20 @@ def create_app():
     # Register blueprints
     from .login import login_bp
     app.register_blueprint(login_bp)
-
-    from .lobby import lobby_bp
-    app.register_blueprint(lobby_bp)
-
+    
+    
     from .register import register_bp
     app.register_blueprint(register_bp)
 
+    
+    from .lobby import lobby_bp
+    app.register_blueprint(lobby_bp)
+
+
+    from tictactoe_backend.game import game_bp
+    app.register_blueprint(game_bp)
+    
+    
     login_manager.init_app(app)
     socketio.init_app(app)
 

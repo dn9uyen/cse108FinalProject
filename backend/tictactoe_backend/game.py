@@ -8,6 +8,7 @@ game_bp = Blueprint("game", __name__)
 
 gameManager = GameManager()
 
+
 def check_win(board):
     win_conditions = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8],  # Rows
@@ -19,6 +20,7 @@ def check_win(board):
             return True
     return False
 
+  
 @socketio.on('joinGame', namespace='/game')
 def onJoin(json):
     gameId = json["gameId"]
@@ -27,6 +29,7 @@ def onJoin(json):
     # send game state and players to joining player
     send(gameId, to=gameId)
 
+    
 @socketio.on("doTurn", namespace="/game")
 def doTurn(json):
     # call game logic to process then send new game state to players
@@ -42,6 +45,7 @@ def doTurn(json):
             # Send updated game state to players
             emit("gameState", {"board": game["board"]}, to=gameId)
 
+            
 @socketio.on("sendMessage", namespace="/game")
 def sendMessage(json):
     # chat message feature
