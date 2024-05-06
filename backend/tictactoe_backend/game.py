@@ -1,8 +1,8 @@
 from flask import Blueprint, request
 from flask_socketio import join_room, send, emit
 
-from .__init__ import socketio
-from .gamemanager import GameManager
+from tictactoe_backend import socketio
+from tictactoe_backend.gamemanager import GameManager
 
 game_bp = Blueprint("game", __name__)
 
