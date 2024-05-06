@@ -1,46 +1,55 @@
-import { Paper } from "@mui/material";
-import { useState } from "react";
-import { io } from "socket.io-client";
-
-
+import { Box, Paper } from "@mui/material";
+import GameBoard from "../components/GameBoard";
+import ChatBox from "../components/ChatBox";
+import { useEffect, useState } from "react";
+import { socket } from "../socket"
+import { ConnectionManager } from "../components/ConnectionManager";
 
 export default function Game() {
-    let [chat, setChat] = useState("")
+    let [chat, setChat] = useState("");
+    const gameId = "123"
 
-    function sendSocket() {
-        const socket = io("http://127.0.0.1:5000/game");
-        socket.on('connect', function() {
-            socket.emit('joinGame', { gameId: "12332" });
-        });
+    useEffect(() => {
+        function onConnect() {
+            socket.emit('joinGame', { gameId: gameId });
+            console.log(socket.listeners("chatBroadcast"));
+        }
 
-        socket.on("messageBroadcast", (json) => {
-            setChat(chat + json["message"])
+        function onDisconnect() {
+        }
 
-        })
-    }
+        function onChatBroadcast(json: any) {
+            setChat(chat + json["message"]);
+            console.log("here")
+        }
+
+        socket.on('connect', onConnect);
+        socket.on('disconnect', onDisconnect);
+        socket.on('chatBroadcast', (json) => { onChatBroadcast(json); console.log("here")});
+
+        return () => {
+            socket.off('connect', onConnect);
+            socket.off('disconnect', onDisconnect);
+            socket.off('chatBroadcast', onChatBroadcast);
+        };
+    }, []);
 
     function doTurn() {
-        const socket = io("http://127.0.0.1:5000/game");
-        socket.emit('doTurn', { gameId: "12332" });
-    }
-
-    function sendMessage() {
-        let text = document.getElementById("chatInput")?.value;
-        const socket = io("http://127.0.0.1:5000/game");
-        socket.emit("sendMessage", { gameId: "12332", message: text });
+        socket.emit('doTurn', { gameId: "123" });
     }
 
     return (
-        <Paper>
-            <p>game page</p>
-            <button onClick={() => sendSocket()}>Connect</button>
-            <button onClick={() => doTurn()}>Do turn</button>
-            <button onClick={() => sendMessage()}>Send message</button>
-            <br></br>
-            <p>chat</p>
-            <p>{chat}</p>
-            <br></br>
-            <input id="chatInput"></input>
-        </Paper>
+        <Box sx={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Paper>
+                <p>game page</p>
+                <ConnectionManager/>
+                <button onClick={() => doTurn()}>Do turn</button>
+                <br></br>
+                <ChatBox chat={chat}/>
+                <br></br>
+                <GameBoard />
+            </Paper>
+
+        </Box>
     )
 }
