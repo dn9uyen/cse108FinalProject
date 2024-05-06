@@ -1,10 +1,10 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_socketio import SocketIO
-from flask_login import LoginManager
+from .models import db, login_manager
+
 
 socketio = SocketIO(cors_allowed_origins="*")
-login_manager = LoginManager()
 
 
 def create_app():
@@ -12,19 +12,33 @@ def create_app():
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY="dev",
+        SQLALCHEMY_DATABASE_URI="sqlite:///tictactoe.sqlite"
+
     )
     CORS(app)
 
-    # Register blueprints
-    from tictactoe_backend.login import login_bp
-    app.register_blueprint(login_bp)
+    # init db and create tables
+    db.init_app(app)
+    with app.app_context():
+        db.create_all()
 
-    from tictactoe_backend.lobby import lobby_bp
+    # Register blueprints
+    from .login import login_bp
+    app.register_blueprint(login_bp)
+    
+    
+    from .register import register_bp
+    app.register_blueprint(register_bp)
+
+    
+    from .lobby import lobby_bp
     app.register_blueprint(lobby_bp)
+
 
     from tictactoe_backend.game import game_bp
     app.register_blueprint(game_bp)
-
+    
+    
     login_manager.init_app(app)
     socketio.init_app(app)
 
