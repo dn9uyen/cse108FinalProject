@@ -1,5 +1,5 @@
 from flask import Blueprint
-from .__init__ import socketio
+from tictactoe_backend import socketio
 
 lobby_bp = Blueprint("lobby", __name__)
 

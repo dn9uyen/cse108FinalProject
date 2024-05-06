@@ -75,7 +75,7 @@ def sendMessage(json):
     # verify player is in room before doing stuff
     gameId = json["gameId"]
     message = json["message"]
-    emit("messageBroadcast", json, to=gameId)
+    emit("chatBroadcast", json, to=gameId)
 
 @game_bp.route("/game")
 def sessionPage():

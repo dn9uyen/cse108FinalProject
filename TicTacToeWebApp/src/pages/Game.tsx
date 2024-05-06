@@ -11,7 +11,7 @@ export default function Game() {
 
     useEffect(() => {
         function onConnect() {
-            // socket.emit('joinGame', { gameId: gameId });
+            socket.emit('joinGame', { gameId: gameId });
         }
 
         function onDisconnect() {
