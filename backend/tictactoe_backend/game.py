@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from flask_socketio import join_room, send
+from flask_socketio import join_room, send, emit
 
 from tictactoe_backend import socketio
 from tictactoe_backend.gamemanager import GameManager
@@ -29,7 +29,7 @@ def sendMessage(json):
     # verify player is in room before doing stuff
     gameId = json["gameId"]
     message = json["message"]
-    send(message, to=gameId)
+    emit("messageBroadcast", json, to=gameId)
 
 @game_bp.route("/game")
 def sessionPage():
