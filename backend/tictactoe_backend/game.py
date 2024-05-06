@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_socketio import join_room, send, emit
 
-import socketio
+from .__init__ import socketio
 from .gamemanager import GameManager
 
 game_bp = Blueprint("game", __name__)
