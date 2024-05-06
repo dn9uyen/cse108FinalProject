@@ -1,5 +1,6 @@
 import { Box } from "@mui/material"
 import { socket } from "../socket"
+import { useEffect } from "react";
 
 
 export default function ChatBox(props: any) {

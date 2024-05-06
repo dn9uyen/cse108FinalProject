@@ -6,26 +6,25 @@ import { socket } from "../socket"
 import { ConnectionManager } from "../components/ConnectionManager";
 
 export default function Game() {
-    let [chat, setChat] = useState("");
+    let [chat, setChat] = useState([]);
     const gameId = "123"
 
     useEffect(() => {
         function onConnect() {
             socket.emit('joinGame', { gameId: gameId });
-            console.log(socket.listeners("chatBroadcast"));
         }
 
         function onDisconnect() {
         }
 
         function onChatBroadcast(json: any) {
-            setChat(chat + json["message"]);
-            console.log("here")
+            console.log(chat);
+            setChat(chat.concat(json["message"]));
         }
 
         socket.on('connect', onConnect);
         socket.on('disconnect', onDisconnect);
-        socket.on('chatBroadcast', (json) => { onChatBroadcast(json); console.log("here")});
+        socket.on('chatBroadcast', (json) => { onChatBroadcast(json) });
 
         return () => {
             socket.off('connect', onConnect);
@@ -42,10 +41,10 @@ export default function Game() {
         <Box sx={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Paper>
                 <p>game page</p>
-                <ConnectionManager/>
+                <ConnectionManager />
                 <button onClick={() => doTurn()}>Do turn</button>
                 <br></br>
-                <ChatBox chat={chat}/>
+                <ChatBox chat={chat} />
                 <br></br>
                 <GameBoard />
             </Paper>
