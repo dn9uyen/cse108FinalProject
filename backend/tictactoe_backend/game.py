@@ -1,8 +1,10 @@
 from flask import Blueprint, json
 from flask_socketio import join_room, send, emit
 
-from .__init__ import socketio
-from .gamemanager import GameManager
+from tictactoe_backend.socketauth import authenticated_only
+
+from tictactoe_backend import socketio
+from tictactoe_backend.gamemanager import GameManager
 
 game_bp = Blueprint("game", __name__)
 
@@ -44,23 +46,29 @@ def onJoin(json):
     # send game state and players to joining player
     send(gameId, to=gameId)
 
-    
-@socketio.on("doTurn", namespace="/game")
+
+@socketio.on("turnSubmit", namespace="/game")
 def doTurn(json):
     # call game logic to process then send new game state to players
     # verify player is in room before doing stuff
     gameId = json["gameId"]
-    send(gameManager.getGame(gameId).gameState, to=gameId)
-    move_index = json.get("moveIndex")
-    if move_index is not None and game:
-        game["board"][move_index] = "X"
-        if check_win(game["board"]):
+    gameObject = gameManager.getGame(gameId)
+    if (gameObject != None):
+        board = gameObject.board
+        currentPlayer = gameObject.currentPlayer
+    else:
+        return "invalid game id"
+
+    move_index = int(json.get("moveIndex"))
+    if move_index is not None and board:
+        board[move_index] = currentPlayer
+        if check_win(board):
             emit("gameWin", {"winner": "X"}, to=gameId)
         else:
             # Send updated game state to players
-            emit("gameState", {"board": game["board"]}, to=gameId)
+            emit("gameState", {"board": board}, to=gameId)
 
-            
+
 @socketio.on("sendMessage", namespace="/game")
 def sendMessage(json):
     # chat message feature
