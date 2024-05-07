@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 
 import Login from "./pages/login/login.tsx";
 import Register from "./pages/login/register.tsx";
-import Lobby from "./pages/testpage/lobby.tsx";
+import Lobby from "./pages/lobby.tsx";
 import Game from './pages/Game';
 
 function App() {

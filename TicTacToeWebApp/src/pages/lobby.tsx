@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { gameSocket, lobbySocket } from "../../socket";
-import { ConnectionManager } from "../../components/ConnectionManager";
+import { gameSocket, lobbySocket } from "../socket";
+import { ConnectionManager } from "../components/ConnectionManager";
 
 interface Lobby {
     players: string[];

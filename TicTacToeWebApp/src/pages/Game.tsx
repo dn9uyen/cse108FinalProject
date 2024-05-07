@@ -3,19 +3,20 @@ import ChatBox from "../components/ChatBox";
 import { useEffect, useState } from "react";
 import { gameSocket } from "../socket"
 import { ConnectionManager } from "../components/ConnectionManager";
+import Cookies from "js-cookie"
 
 export default function Game() {
     let [chat, setChat] = useState([]);
-    const [board, setBoard] = useState(Array(9).fill(null));
+    const [board, setBoard] = useState(Array(9).fill(-1));
     const gameId = "123"
 
     useEffect(() => {
         function onConnect() {
-            gameSocket.emit('joinGame', { gameId: gameId });
+            gameSocket.emit('joinGame', { gameId: gameId, username: Cookies.get("username") });
         }
 
         function onDisconnect() {
-            gameSocket.emit("disconnectEvent", {gameId: gameId, username: "PUTUSERNAMEHERE"})
+            gameSocket.emit("disconnectEvent", {gameId: gameId, username: Cookies.get("username")})
         }
 
         function onChatBroadcast(json: any) {
@@ -47,7 +48,7 @@ export default function Game() {
             //newBoard[index] = "X"; // For now, assuming the player is always X
             //setBoard(newBoard);
             // Here you may want to emit the new board state to the server
-            gameSocket.emit("turnSubmit", { gameId: gameId, moveIndex: index })
+            gameSocket.emit("turnSubmit", { gameId: gameId, username: Cookies.get("username"), moveIndex: index })
             gameSocket.emit("lobbyRequest")
         }
     }
