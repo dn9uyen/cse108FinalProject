@@ -56,22 +56,46 @@ export default function Game(props: any) { // TODO: pass game id from lobby
 
     return (
         <Box sx={{ display: 'flex', height: '100vh' }}>
-            <Box sx={{ width: '25%', backgroundColor: '#f0f0f0', padding: '20px' }}>
-                <ChatBox chat={chat} gameId={gameId} />
-            </Box>
-            <Box sx={{ flexGrow: 1, padding: '20px' }}>
-                <Box sx={{ backgroundColor: '#44344F', padding: '10px 0', textAlign: 'center', marginBottom: '20px' }}>
-                    <Typography variant="h3" sx={{ color: '#fff' }}>TIC TAC TOE</Typography>
-                </Box>
+        <Box sx={{ width: '25%', backgroundColor: '#f0f0f0', padding: '20px' }}>
+            <ChatBox chat={chat} />
+        </Box>
+        <Box sx={{ flexGrow: 1, padding: '20px' }}>
 
-                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '175px' }}>
-                    <div className="board" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 100px)', gap: '5px', justifyContent: 'center' }}>
-                        {board.map((cell, index) => (
-                            <button key={index} onClick={() => handleClick(index)} style={{ width: '100px', height: '100px', fontSize: '2rem' }}>{cell}</button>
-                        ))}
-                    </div>
+            <Box sx={{ display: "flex", alignItems: "center", padding: '10px 0', textAlign: 'center', marginBottom: '20px' }}>
+                <Box sx={{ display: "flex", backgroundColor: "#96939B", flexDirection:"column", width:"100%", alignItems: "center", justifyContent:"center", paddingBottom: "15px", textAlign: 'center'}}>
+                    <Typography variant="h4" sx={{ color: '#fff', backgroundColor: "black", display: "flex", width: "100%", justifyContent: "center", padding: "10px 0"}}>PLAYER 1</Typography>
+                    <Typography  sx={{ fontSize:"20px", color: '#fff', margin:"10px 0" }}>username</Typography>
+                    <Typography  sx={{ fontSize:"20px", color: '#fff' }}># WINS</Typography>
                 </Box>
+                <Box sx={{ display: "flex", backgroundColor: "#FC814A", flexDirection:"column", width:"100%", alignItems: "center", justifyContent:"center", paddingBottom: "15px", textAlign: 'center'}}>
+                    <Typography variant="h4" sx={{ color: '#fff', backgroundColor: "black", display: "flex", width: "100%", justifyContent: "center", padding: "10px 0"}}>PLAYER 2</Typography>
+                    <Typography  sx={{ fontSize:"20px", color: '#fff', margin:"10px 0"  }}>username</Typography>
+                    <Typography  sx={{ fontSize:"20px", color: '#fff' }}># WINS</Typography>
+                </Box>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '175px' }}>
+                <div className="board" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 100px)', gap: '5px', justifyContent: 'center' }}>
+                    {board.map((cell, index) => (
+                        <button key={index} onClick={() => handleClick(index)} style={{
+                            width: '100px',
+                            height: '100px',
+                            fontSize: '2rem',
+                            backgroundColor:"#E8E8E8",
+                            color: "#564256",
+                            cursor: "pointer",
+                            transition: 'opacity 0.3s',
+                            opacity: 0.7}}
+                        onMouseEnter={(e) => (e.target as HTMLElement).style.opacity = '1'}
+                        onMouseLeave={(e) => (e.target as HTMLElement).style.opacity = '0.7'}>
+                            {cell === 0 ? 'X' : cell === 1 ? 'O' : ''}
+                        </button>
+                    ))}
+                </div>
+            </Box>
+            <Box sx={{  padding: '10px 0', textAlign: 'center', marginTop: '20px' }}>
+                <Typography variant="h3" sx={{ color: '#000' }}>TIC TAC TOE</Typography>
             </Box>
         </Box>
+    </Box>
     )
 }
