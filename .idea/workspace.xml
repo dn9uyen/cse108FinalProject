@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f40deaa-6e52-462e-bcf2-f49a90ad03de" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/TicTacToeWebApp/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToeWebApp/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TicTacToeWebApp/src/pages/login/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToeWebApp/src/pages/login/login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/tictactoe_backend/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/tictactoe_backend/game.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TicTacToeWebApp/src/components/logoutbutton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TicTacToeWebApp/src/components/ConnectionManager.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToeWebApp/src/components/ConnectionManager.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TicTacToeWebApp/src/pages/lobby.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToeWebApp/src/pages/lobby.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TicTacToeWebApp/src/pages/testpage/page.tsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,10 +29,13 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2g7EbTe8ct9iZNZIZWtukgnzYlb" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -40,16 +45,21 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "game-socket-logic",
+    "git-widget-placeholder": "main",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "/Users/hora/Desktop/CSE108 Tic-Tac-Toe/cse108FinalProject/TicTacToeWebApp/node_modules/typescript/lib",
+    "ts.external.directory.path": "/Users/hora/Desktop/CSE108 Tic-Tac-Toe/Newest/TicTacToeWebApp/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/TicTacToeWebApp/src/components" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -66,6 +76,7 @@
       <option name="presentableId" value="Default" />
       <updated>1715040287396</updated>
       <workItem from="1715040289100" duration="8119000" />
+      <workItem from="1715057767593" duration="4260000" />
     </task>
     <servers />
   </component>
