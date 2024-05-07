@@ -1,13 +1,11 @@
 import { Box } from "@mui/material"
 import { gameSocket } from "../socket"
-import { useEffect } from "react";
-
+import Cookies from "js-cookie"
 
 export default function ChatBox(props: any) {
-
     const sendMessage = () => {
         let text = document.getElementById("chatInput")?.value;
-        gameSocket.emit("sendMessage", { gameId: "123", message: text });
+        gameSocket.emit("sendMessage", { gameId: "123", message: text, username: Cookies.get("username") });
     }
 
     return (

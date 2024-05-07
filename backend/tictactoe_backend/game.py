@@ -17,8 +17,8 @@ def check_win(board):
         [0, 4, 8], [2, 4, 6]  # Diagonals
     ]
     for condition in win_conditions:
-        if (board[condition[0]] == board[condition[1]] == board[condition[2]]
-                and board[condition[0]] + board[condition[1]] + board[condition[2]] != -3):
+        if ((board[condition[0]] == board[condition[1]] == board[condition[2]])
+                and board[condition[0]] != -1 and board[condition[1]] != -1 and board[condition[2]] != -1):
             return True
     return False
 
@@ -72,14 +72,22 @@ def doTurn(json):
     else:
         return "invalid game id"
 
+    if (json["username"] != gameObject.players[currentPlayer]):
+        return
+
+    print(currentPlayer)
+
     move_index = int(json.get("moveIndex"))
     if move_index is not None and board:
         board[move_index] = currentPlayer
         if check_win(board):
-            emit("gameWin", {"winner": "X"}, to=gameId)
+            emit("gameWin", {"winner": "X" if currentPlayer==1 else "0"}, to=gameId)
+            emit("gameStateUpdate", {"board": board, "currentPlayer": currentPlayer}, to=gameId)
         else:
             # Send updated game state to players
-            emit("gameStateUpdate", {"board": board}, to=gameId)
+            newPlayer = 1 if currentPlayer==0 else 0
+            gameObject.currentPlayer = newPlayer
+            emit("gameStateUpdate", {"board": board, "currentPlayer": newPlayer}, to=gameId)
 
 
 @socketio.on("sendMessage", namespace="/game")
