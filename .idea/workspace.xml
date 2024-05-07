@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f40deaa-6e52-462e-bcf2-f49a90ad03de" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/TicTacToeWebApp/src/components/logoutbutton.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TicTacToeWebApp/src/components/ConnectionManager.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToeWebApp/src/components/ConnectionManager.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TicTacToeWebApp/src/pages/lobby.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToeWebApp/src/pages/lobby.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TicTacToeWebApp/src/pages/testpage/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TicTacToeWebApp/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToeWebApp/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +73,7 @@
       <option name="presentableId" value="Default" />
       <updated>1715040287396</updated>
       <workItem from="1715040289100" duration="8119000" />
-      <workItem from="1715057767593" duration="4260000" />
+      <workItem from="1715057767593" duration="4432000" />
     </task>
     <servers />
   </component>
