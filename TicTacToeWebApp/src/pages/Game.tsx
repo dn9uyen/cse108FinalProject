@@ -38,8 +38,8 @@ export default function Game(props: any) { // TODO: pass game id from lobby
                 const player2 = players[1];
                 setPlayer1Username(player1);
                 setPlayer2Username(player2);
-                 console.log("Player 1 username:", player1);
-                 console.log("Player 2 username:", player2);
+                console.log("Player 1 username:", player1);
+                console.log("Player 2 username:", player2);
             }
         }
 
@@ -50,6 +50,7 @@ export default function Game(props: any) { // TODO: pass game id from lobby
         gameSocket.on('gameInfo', (json) => { onGameInfo(json) });
 
         gameSocket.connect();
+        console.log(gameSocket.connected)
 
         window.onbeforeunload = () => gameSocket.emit('disconnect');
 
