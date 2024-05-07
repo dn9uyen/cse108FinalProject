@@ -9,18 +9,19 @@ db = SQLAlchemy()
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
-    username = Column(String(120), unique=True, nullable=False)
+    username = Column(String(120), unique=True, nullable=False, primary_key=True)
     password = Column(String(128), nullable=False)
+    wins = Column(Integer, nullable=False)
 
     def __init__(self, username, password):
         self.username = username
         self.password = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
+        self.wins = 0;
 
     def verify_password(self, password):
         return check_password_hash(self.password, password)
 
 
 @login_manager.user_loader
-def load_user(user_id):
-    return User.query.filter_by(id=user_id).first()
+def load_user(username):
+    return User.query.filter_by(username=username).first()

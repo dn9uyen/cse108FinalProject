@@ -4,6 +4,7 @@ from flask_socketio import join_room, send, emit
 from tictactoe_backend.socketauth import authenticated_only
 from tictactoe_backend import socketio
 from tictactoe_backend.gamemanager import GameManager
+from tictactoe_backend.models import User, db
 
 game_bp = Blueprint("game", __name__)
 
@@ -82,7 +83,11 @@ def doTurn(json):
         board[move_index] = currentPlayer
         if check_win(board):
             emit("gameWin", {"winner": "X" if currentPlayer==1 else "0"}, to=gameId)
-            emit("gameStateUpdate", {"board": board, "currentPlayer": currentPlayer}, to=gameId)
+            emit("gameStateUpdate", {"board": board, "currentPlayer": -1}, to=gameId)
+            user = User.query.get(gameObject.players[currentPlayer])
+            user.wins += 1
+            db.session.commit()
+            print(user.wins)
         else:
             # Send updated game state to players
             newPlayer = 1 if currentPlayer==0 else 0
