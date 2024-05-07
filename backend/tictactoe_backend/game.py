@@ -36,9 +36,9 @@ def lobbyRequest():
 
  
 @socketio.on('joinGame', namespace='/game')
-def onJoin(json):
-    gameId = json["gameId"]
-    username = json["username"]
+def onJoin(jsonData):
+    gameId = jsonData["gameId"]
+    username = jsonData["username"]
     gameManager.createGame(gameId)
     gameManager.joinGame(gameId, username)
     join_room(gameId)

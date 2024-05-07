@@ -5,6 +5,8 @@ import { gameSocket } from "../socket"
 import Cookies from "js-cookie"
 
 export default function Game(props: any) { // TODO: pass game id from lobby
+    const [player1Username, setPlayer1Username] = useState("");
+    const [player2Username, setPlayer2Username] = useState("");
     const [chat, setChat] = useState<String[]>([""]);
     const [board, setBoard] = useState(Array(9).fill(-1));
     const urlParams = new URLSearchParams(window.location.search);
@@ -29,10 +31,23 @@ export default function Game(props: any) { // TODO: pass game id from lobby
             console.log(json["currentPlayer"])
         }
 
+        function onGameInfo(jsonData: any) {
+            const players = jsonData["players"];
+            if (players && players.length >= 2) {
+                const player1 = players[0];
+                const player2 = players[1];
+                setPlayer1Username(player1);
+                setPlayer2Username(player2);
+                 console.log("Player 1 username:", player1);
+                 console.log("Player 2 username:", player2);
+            }
+        }
+
         gameSocket.on('connect', onConnect);
         gameSocket.on('disconnect', onDisconnect);
         gameSocket.on('chatBroadcast', (json) => { onChatBroadcast(json) });
         gameSocket.on('gameStateUpdate', (json) => { onGameStateUpdate(json) });
+        gameSocket.on('gameInfo', (jsonData) => { onGameInfo(jsonData) });
 
         gameSocket.connect();
         console.log(gameSocket.listeners("chatBroadcast"))
@@ -42,6 +57,7 @@ export default function Game(props: any) { // TODO: pass game id from lobby
             gameSocket.off('disconnect', onDisconnect);
             gameSocket.off('chatBroadcast', onChatBroadcast);
             gameSocket.off('gameStateUpdate', onGameStateUpdate);
+            gameSocket.off('gameInfo', onGameInfo)
         };
     }, []);
 
@@ -63,12 +79,12 @@ export default function Game(props: any) { // TODO: pass game id from lobby
                 <Box sx={{ display: "flex", alignItems: "center", padding: '10px 0', textAlign: 'center', marginBottom: '20px' }}>
                     <Box sx={{ display: "flex", backgroundColor: "#96939B", flexDirection: "column", width: "100%", alignItems: "center", justifyContent: "center", paddingBottom: "15px", textAlign: 'center' }}>
                         <Typography variant="h4" sx={{ color: '#fff', backgroundColor: "black", display: "flex", width: "100%", justifyContent: "center", padding: "10px 0" }}>PLAYER 1</Typography>
-                        <Typography sx={{ fontSize: "20px", color: '#fff', margin: "10px 0" }}>username</Typography>
+                        <Typography sx={{ fontSize: "20px", color: '#fff', margin: "10px 0" }}>{player1Username}</Typography>
                         <Typography sx={{ fontSize: "20px", color: '#fff' }}># WINS</Typography>
                     </Box>
                     <Box sx={{ display: "flex", backgroundColor: "#FC814A", flexDirection: "column", width: "100%", alignItems: "center", justifyContent: "center", paddingBottom: "15px", textAlign: 'center' }}>
                         <Typography variant="h4" sx={{ color: '#fff', backgroundColor: "black", display: "flex", width: "100%", justifyContent: "center", padding: "10px 0" }}>PLAYER 2</Typography>
-                        <Typography sx={{ fontSize: "20px", color: '#fff', margin: "10px 0" }}>username</Typography>
+                        <Typography sx={{ fontSize: "20px", color: '#fff', margin: "10px 0" }}>{player2Username}</Typography>
                         <Typography sx={{ fontSize: "20px", color: '#fff' }}># WINS</Typography>
                     </Box>
                 </Box>
