@@ -1,7 +1,7 @@
 import { Box, Paper } from "@mui/material";
 import ChatBox from "../components/ChatBox";
 import { useEffect, useState } from "react";
-import { socket } from "../socket"
+import { gameSocket } from "../socket"
 import { ConnectionManager } from "../components/ConnectionManager";
 
 export default function Game() {
@@ -11,11 +11,11 @@ export default function Game() {
 
     useEffect(() => {
         function onConnect() {
-            socket.emit('joinGame', { gameId: gameId });
+            gameSocket.emit('joinGame', { gameId: gameId });
         }
 
         function onDisconnect() {
-            socket.emit("disconnectEvent", {gameId: gameId, username: "PUTUSERNAMEHERE"})
+            gameSocket.emit("disconnectEvent", {gameId: gameId, username: "PUTUSERNAMEHERE"})
         }
 
         function onChatBroadcast(json: any) {
@@ -26,16 +26,16 @@ export default function Game() {
             setBoard(json["board"])
         }
 
-        socket.on('connect', onConnect);
-        socket.on('disconnect', onDisconnect);
-        socket.on('chatBroadcast', (json) => { onChatBroadcast(json) });
-        socket.on('gameStateUpdate', (json) => { onGameStateUpdate(json) });
+        gameSocket.on('connect', onConnect);
+        gameSocket.on('disconnect', onDisconnect);
+        gameSocket.on('chatBroadcast', (json) => { onChatBroadcast(json) });
+        gameSocket.on('gameStateUpdate', (json) => { onGameStateUpdate(json) });
 
         return () => {
-            socket.off('connect', onConnect);
-            socket.off('disconnect', onDisconnect);
-            socket.off('chatBroadcast', onChatBroadcast);
-            socket.off('gameStateUpdate', onGameStateUpdate);
+            gameSocket.off('connect', onConnect);
+            gameSocket.off('disconnect', onDisconnect);
+            gameSocket.off('chatBroadcast', onChatBroadcast);
+            gameSocket.off('gameStateUpdate', onGameStateUpdate);
         };
     }, []);
 
@@ -47,8 +47,8 @@ export default function Game() {
             //newBoard[index] = "X"; // For now, assuming the player is always X
             //setBoard(newBoard);
             // Here you may want to emit the new board state to the server
-            socket.emit("turnSubmit", { gameId: gameId, moveIndex: index })
-            socket.emit("lobbyRequest")
+            gameSocket.emit("turnSubmit", { gameId: gameId, moveIndex: index })
+            gameSocket.emit("lobbyRequest")
         }
     }
 

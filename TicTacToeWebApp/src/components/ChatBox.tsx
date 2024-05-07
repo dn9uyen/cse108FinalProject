@@ -1,5 +1,5 @@
 import { Box } from "@mui/material"
-import { socket } from "../socket"
+import { gameSocket } from "../socket"
 import { useEffect } from "react";
 
 
@@ -7,7 +7,7 @@ export default function ChatBox(props: any) {
 
     const sendMessage = () => {
         let text = document.getElementById("chatInput")?.value;
-        socket.emit("sendMessage", { gameId: "123", message: text });
+        gameSocket.emit("sendMessage", { gameId: "123", message: text });
     }
 
     return (
