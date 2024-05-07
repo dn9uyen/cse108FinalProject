@@ -17,7 +17,8 @@ def check_win(board):
         [0, 4, 8], [2, 4, 6]  # Diagonals
     ]
     for condition in win_conditions:
-        if board[condition[0]] == board[condition[1]] == board[condition[2]] is not None:
+        if (board[condition[0]] == board[condition[1]] == board[condition[2]]
+                and board[condition[0]] + board[condition[1]] + board[condition[2]] != -3):
             return True
     return False
 
@@ -45,8 +46,9 @@ def lobbyRequest():
 @socketio.on('joinGame', namespace='/game')
 def onJoin(json):
     gameId = json["gameId"]
+    username = json["username"]
     gameManager.createGame(gameId)
-    gameManager.joinGame(gameId, "PUTUSERNAMEHERE")
+    gameManager.joinGame(gameId, username)
     join_room(gameId)
     # send game state and players to joining player
     send(gameId, to=gameId)
