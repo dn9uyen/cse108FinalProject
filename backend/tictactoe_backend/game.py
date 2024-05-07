@@ -36,7 +36,7 @@ def lobbyRequest():
               }'''
     emit(json.loads(data))
 
-  
+ 
 @socketio.on('joinGame', namespace='/game')
 def onJoin(json):
     gameId = json["gameId"]
@@ -65,7 +65,7 @@ def doTurn(json):
             emit("gameWin", {"winner": "X"}, to=gameId)
         else:
             # Send updated game state to players
-            emit("gameState", {"board": board}, to=gameId)
+            emit("gameStateUpdate", {"board": board}, to=gameId)
 
 
 @socketio.on("sendMessage", namespace="/game")

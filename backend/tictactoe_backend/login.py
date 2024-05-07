@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, url_for
+from flask import Blueprint, jsonify, request, redirect, url_for
 from flask_login import login_user, logout_user, login_required
 from .models import User
 
@@ -14,17 +14,17 @@ def index():
 
 @login_bp.route("/login", methods=["POST"])
 def login():
-    username = request.form.get("username")
-    password = request.form.get("password")
+    data = request.json
+    username = data.get("username")
+    password = data.get("password")
 
     user = User.query.filter_by(username=username).first()
 
     if user and user.verify_password(password):
         login_user(user)
-        # far more concise than frontend redirecting
-        return redirect(url_for("lobby.lobbyPageExample"))
+        return jsonify({"message": "Logged in successfully"}), 200
     else:
-        return "Invalid username and or password"
+        return jsonify({"error": "Invalid username and or password."}), 400
 
 
 @login_bp.route("/logout")

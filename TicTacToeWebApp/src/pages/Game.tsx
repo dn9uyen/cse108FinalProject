@@ -18,18 +18,23 @@ export default function Game() {
         }
 
         function onChatBroadcast(json: any) {
-            console.log(chat);
             setChat(chat.concat(json["message"]));
+        }
+
+        function onGameStateUpdate(json: any) {
+            setBoard(json["board"])
         }
 
         socket.on('connect', onConnect);
         socket.on('disconnect', onDisconnect);
         socket.on('chatBroadcast', (json) => { onChatBroadcast(json) });
+        socket.on('gameStateUpdate', (json) => { onGameStateUpdate(json) });
 
         return () => {
             socket.off('connect', onConnect);
             socket.off('disconnect', onDisconnect);
             socket.off('chatBroadcast', onChatBroadcast);
+            socket.off('gameStateUpdate', onGameStateUpdate);
         };
     }, []);
 
@@ -37,10 +42,11 @@ export default function Game() {
         const newBoard = [...board];
         // Check if the cell is empty
         if (!newBoard[index]) {
-            newBoard[index] = "X"; // For now, assuming the player is always X
-            setBoard(newBoard);
+            // client doesn't need to handle board updates because server sends it
+            //newBoard[index] = "X"; // For now, assuming the player is always X
+            //setBoard(newBoard);
             // Here you may want to emit the new board state to the server
-            socket.emit("turnSubmit", {gameId: gameId})
+            socket.emit("turnSubmit", { gameId: gameId, moveIndex: index })
         }
     }
 
