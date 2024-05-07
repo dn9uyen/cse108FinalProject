@@ -12,8 +12,8 @@ def create_app():
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY="dev",
-        SQLALCHEMY_DATABASE_URI="sqlite:///tictactoe.sqlite"
-
+        SQLALCHEMY_DATABASE_URI="sqlite:///tictactoe.sqlite",
+        CORS_HEADERS = "Content-Type"
     )
     CORS(app)
 
