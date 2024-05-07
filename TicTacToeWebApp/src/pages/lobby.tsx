@@ -3,6 +3,7 @@ import { List, ListItem, ListItemText, Typography, Box } from "@mui/material";
 import { gameSocket, lobbySocket } from "../socket";
 import { ConnectionManager } from "../components/ConnectionManager";
 import LogoutButton from "../components/logoutbutton.tsx";
+import JoinButton from "../components/JoinButton.tsx";
 
 interface Lobby {
     players: string[];
@@ -61,6 +62,8 @@ export default function Lobby() {
                         key={lobby.lobbyId}
                         style={{ border: "1px solid #ccc", borderRadius: "5px", marginBottom: "5px", backgroundColor: "#f9f9f9" }}
                     >
+                        {lobby.lobbyId}
+                        <JoinButton gameId={ lobby.lobbyId }/>
                         <ListItemText
                             primary={`Players: ${lobby.players.join(', ')}`}
                         />

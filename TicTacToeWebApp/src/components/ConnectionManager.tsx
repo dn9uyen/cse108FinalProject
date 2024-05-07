@@ -1,11 +1,20 @@
 import { Button, Grid, Typography } from "@mui/material";
 import { gameSocket, lobbySocket } from "../socket";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 export function ConnectionManager() {
+    const navigate = useNavigate();
+
     function connectGameSocket() {
-        gameSocket.connect();
+        navigate({
+            pathname: "/game",
+            search: `?${createSearchParams({
+                gameId: window.crypto.getRandomValues(new Uint8Array(3)).join("")
+            })}`
+        });
     }
 
+    /*
     function disconnectGameSocket() {
         gameSocket.disconnect();
     }
@@ -17,14 +26,20 @@ export function ConnectionManager() {
     function disconnectLobbySocket() {
         lobbySocket.disconnect();
     }
-
+    */
     return (
-        <>
-            <button onClick={connectGameSocket}>Connect game socket</button>
-            <button onClick={disconnectGameSocket}>Disconnect game socket</button>
-            <button onClick={connectLobbySocket}>Connect lobby socket</button>
-            <button onClick={disconnectLobbySocket}>Disconnect lobby socket</button>
 
-        </>
+        <Grid item xs={3}>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={connectGameSocket}
+
+                sx={{ borderRadius: "5px", height: "60px", backgroundColor: "#44344F", color: "white" }}
+            >
+                <Typography variant="button">Create A Game</Typography>
+            </Button>
+        </Grid>
+
     );
 }

@@ -5,7 +5,7 @@ import Cookies from "js-cookie"
 export default function ChatBox(props: any) {
     const sendMessage = () => {
         let text = document.getElementById("chatInput")?.value;
-        gameSocket.emit("sendMessage", { gameId: "123", message: text, username: Cookies.get("username") });
+        gameSocket.emit("sendMessage", { gameId: props.gameId, message: text, username: Cookies.get("username") });
     }
 
     return (
