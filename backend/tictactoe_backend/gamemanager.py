@@ -24,13 +24,13 @@ class GameManager:
             return None
 
     def joinGame(self, gameId, username):
-        if gameId in self.games:
+        if gameId in self.games and username not in self.games[gameId].players:
             self.games[gameId].players.append(username)
 
     def leaveGame(self, gameId, username):
         if gameId in self.games and username in self.games[gameId].players:
             self.games[gameId].players.remove(username)
-            if len(self.games[gameId].players):
+            if len(self.games[gameId].players) == 0:
                 self.removeGame(gameId)
 
     def removeGame(self, gameId):
