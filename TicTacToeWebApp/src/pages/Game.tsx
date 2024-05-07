@@ -7,11 +7,13 @@ import Cookies from "js-cookie"
 export default function Game(props: any) { // TODO: pass game id from lobby
     const [chat, setChat] = useState<String[]>([""]);
     const [board, setBoard] = useState(Array(9).fill(-1));
-    const gameId = "123";
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameId = urlParams.get('gameId');
 
     useEffect(() => {
         function onConnect() {
             gameSocket.emit('joinGame', { gameId: gameId, username: Cookies.get("username") });
+            console.log(gameSocket.connected)
         }
 
         function onDisconnect() {
@@ -20,6 +22,7 @@ export default function Game(props: any) { // TODO: pass game id from lobby
 
         function onChatBroadcast(json: any) {
             setChat(chat.concat([json["message"]]));
+            console.log("here")
         }
 
         function onGameStateUpdate(json: any) {
@@ -31,6 +34,9 @@ export default function Game(props: any) { // TODO: pass game id from lobby
         gameSocket.on('disconnect', onDisconnect);
         gameSocket.on('chatBroadcast', (json) => { onChatBroadcast(json) });
         gameSocket.on('gameStateUpdate', (json) => { onGameStateUpdate(json) });
+
+        gameSocket.connect();
+        console.log(gameSocket.listeners("chatBroadcast"))
 
         return () => {
             gameSocket.off('connect', onConnect);

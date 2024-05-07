@@ -11,6 +11,7 @@ class User(db.Model, UserMixin):
     __tablename__ = 'users'
     username = Column(String(120), unique=True, nullable=False, primary_key=True)
     password = Column(String(128), nullable=False)
+    id = Column(Integer)
     wins = Column(Integer, nullable=False)
 
     def __init__(self, username, password):
