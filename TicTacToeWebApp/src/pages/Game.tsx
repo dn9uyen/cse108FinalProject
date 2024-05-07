@@ -1,8 +1,7 @@
-import { Box, Paper } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import ChatBox from "../components/ChatBox";
 import { useEffect, useState } from "react";
 import { gameSocket } from "../socket"
-import { ConnectionManager } from "../components/ConnectionManager";
 import Cookies from "js-cookie"
 
 export default function Game() {
@@ -55,20 +54,23 @@ export default function Game() {
 
 
     return (
-        <Box sx={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Paper>
-                <p>game page</p>
-                <ConnectionManager />
-                <br></br>
-                <ChatBox chat={chat} />
-                <br></br>
-                <div className="board">
+        <Box sx={{ display: 'flex', height: '100vh' }}>
+        <Box sx={{ width: '25%', backgroundColor: '#f0f0f0', padding: '20px' }}>
+            <ChatBox chat={chat} />
+        </Box>
+        <Box sx={{ flexGrow: 1, padding: '20px' }}>
+            <Box sx={{ backgroundColor: '#44344F', padding: '10px 0', textAlign: 'center', marginBottom: '20px' }}>
+                <Typography variant="h3" sx={{ color: '#fff' }}>TIC TAC TOE</Typography>
+            </Box>
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '175px' }}>
+                <div className="board" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 100px)', gap: '5px', justifyContent: 'center' }}>
                     {board.map((cell, index) => (
-                        <button key={index} onClick={() => handleClick(index)}>{cell}</button>
+                        <button key={index} onClick={() => handleClick(index)} style={{ width: '100px', height: '100px', fontSize: '2rem' }}>{cell}</button>
                     ))}
                 </div>
-            </Paper>
-
+            </Box>
         </Box>
+    </Box>
     )
 }
