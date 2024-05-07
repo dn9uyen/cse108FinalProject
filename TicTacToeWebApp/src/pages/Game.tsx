@@ -1,35 +1,42 @@
 import { Box, Paper } from "@mui/material";
 import ChatBox from "../components/ChatBox";
 import { useEffect, useState } from "react";
-import { socket } from "../socket"
+import { gameSocket } from "../socket"
 import { ConnectionManager } from "../components/ConnectionManager";
+import Cookies from "js-cookie"
 
 export default function Game() {
     let [chat, setChat] = useState([]);
-    const [board, setBoard] = useState(Array(9).fill(null));
+    const [board, setBoard] = useState(Array(9).fill(-1));
     const gameId = "123"
 
     useEffect(() => {
         function onConnect() {
-            socket.emit('joinGame', { gameId: gameId });
+            gameSocket.emit('joinGame', { gameId: gameId, username: Cookies.get("username") });
         }
 
         function onDisconnect() {
+            gameSocket.emit("disconnectEvent", {gameId: gameId, username: Cookies.get("username")})
         }
 
         function onChatBroadcast(json: any) {
-            console.log(chat);
             setChat(chat.concat(json["message"]));
         }
 
-        socket.on('connect', onConnect);
-        socket.on('disconnect', onDisconnect);
-        socket.on('chatBroadcast', (json) => { onChatBroadcast(json) });
+        function onGameStateUpdate(json: any) {
+            setBoard(json["board"])
+        }
+
+        gameSocket.on('connect', onConnect);
+        gameSocket.on('disconnect', onDisconnect);
+        gameSocket.on('chatBroadcast', (json) => { onChatBroadcast(json) });
+        gameSocket.on('gameStateUpdate', (json) => { onGameStateUpdate(json) });
 
         return () => {
-            socket.off('connect', onConnect);
-            socket.off('disconnect', onDisconnect);
-            socket.off('chatBroadcast', onChatBroadcast);
+            gameSocket.off('connect', onConnect);
+            gameSocket.off('disconnect', onDisconnect);
+            gameSocket.off('chatBroadcast', onChatBroadcast);
+            gameSocket.off('gameStateUpdate', onGameStateUpdate);
         };
     }, []);
 
@@ -37,10 +44,12 @@ export default function Game() {
         const newBoard = [...board];
         // Check if the cell is empty
         if (!newBoard[index]) {
-            newBoard[index] = "X"; // For now, assuming the player is always X
-            setBoard(newBoard);
+            // client doesn't need to handle board updates because server sends it
+            //newBoard[index] = "X"; // For now, assuming the player is always X
+            //setBoard(newBoard);
             // Here you may want to emit the new board state to the server
-            socket.emit("turnSubmit", {gameId: gameId})
+            gameSocket.emit("turnSubmit", { gameId: gameId, username: Cookies.get("username"), moveIndex: index })
+            gameSocket.emit("lobbyRequest")
         }
     }
 

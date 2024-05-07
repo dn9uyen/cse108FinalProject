@@ -3,6 +3,7 @@ import { Box, Button, Divider, FormControl, FormHelperText, IconButton, InputAdo
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie"
 
 function Login() {
     const navigate = useNavigate();
@@ -27,7 +28,8 @@ function Login() {
 
         if (response.status !== 400) {
             setCredentialError(false);
-            navigate("/game");
+            navigate("/lobby");
+            Cookies.set("username", username);
         } else {
             setCredentialError(true);
         }

@@ -3,6 +3,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie"
 
 
 export default function Register() {
@@ -28,7 +29,8 @@ export default function Register() {
         });
         if (response.status != 403) {
             setUsernameError(false);
-            navigate("/page");
+            navigate("/lobby");
+            Cookies.set("username", username);
         }
         else {
             setUsernameError(true);

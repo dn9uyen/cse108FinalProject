@@ -17,33 +17,47 @@ def check_win(board):
         [0, 4, 8], [2, 4, 6]  # Diagonals
     ]
     for condition in win_conditions:
-        if board[condition[0]] == board[condition[1]] == board[condition[2]] is not None:
+        if (board[condition[0]] == board[condition[1]] == board[condition[2]]
+                and board[condition[0]] + board[condition[1]] + board[condition[2]] != -3):
             return True
     return False
 
 
 @socketio.on("lobbyRequest", namespace="/lobby")
 def lobbyRequest():
-    data = '''{
-                {
-                  players: ["p1", "p2"],
-                  lobbyId: "123",
-                },
-                {
-                  players: ["p3", "p4"],
-                  lobbyId: "321",
-                }
-              }'''
-    emit(json.loads(data))
+    games = []
+    for gameId, gameObject in gameManager.games.items():
+        gameData = {"lobbyId": gameId, "players": gameObject.players}
+        games.append(gameData)
+    # data = '''{
+    #             {
+    #               players: ["p1", "p2"],
+    #               lobbyId: "123",
+    #             },
+    #             {
+    #               players: ["p3", "p4"],
+    #               lobbyId: "321",
+    #             }
+    #           }'''
+    print(json.dumps(games))
+    emit("lobbyList", json.dumps(games))
 
-  
+ 
 @socketio.on('joinGame', namespace='/game')
 def onJoin(json):
     gameId = json["gameId"]
+    username = json["username"]
     gameManager.createGame(gameId)
+    gameManager.joinGame(gameId, username)
     join_room(gameId)
     # send game state and players to joining player
     send(gameId, to=gameId)
+
+@socketio.on("disconnectEvent", namespace="/game")
+def onDisconnect(json):
+    gameId = json["gameId"]
+    username = json["username"]
+    gameManager.leaveGame(gameId, username)
 
 
 @socketio.on("turnSubmit", namespace="/game")
@@ -65,7 +79,7 @@ def doTurn(json):
             emit("gameWin", {"winner": "X"}, to=gameId)
         else:
             # Send updated game state to players
-            emit("gameState", {"board": board}, to=gameId)
+            emit("gameStateUpdate", {"board": board}, to=gameId)
 
 
 @socketio.on("sendMessage", namespace="/game")

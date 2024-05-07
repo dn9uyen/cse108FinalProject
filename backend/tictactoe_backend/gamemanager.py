@@ -14,7 +14,7 @@ class GameManager:
     def __init__(self):
         pass
 
-    def createGame(self, gameId) -> Game | None:
+    def createGame(self, gameId):
         # Creates a game, adds it to the game list, and returns the game object
         # Returns none if gameId already exists
         if gameId not in self.games:
@@ -23,11 +23,21 @@ class GameManager:
         else:
             return None
 
-    def removeGame(self, gameId) -> Game | None:
+    def joinGame(self, gameId, username):
+        if gameId in self.games:
+            self.games[gameId].players.append(username)
+
+    def leaveGame(self, gameId, username):
+        if gameId in self.games and username in self.games[gameId].players:
+            self.games[gameId].players.remove(username)
+            if len(self.games[gameId].players):
+                self.removeGame(gameId)
+
+    def removeGame(self, gameId):
         # Removes a game from the game list and returns the game object
         # Returns none if game doesn't exist
         return self.games.pop(gameId, None)
 
-    def getGame(self, gameId) -> Game | None:
+    def getGame(self, gameId):
         # Get a game
         return self.games.get(gameId, None)

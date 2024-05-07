@@ -1,18 +1,29 @@
-import { socket } from "../socket";
+import { gameSocket, lobbySocket } from "../socket";
 
 export function ConnectionManager() {
-  function connect() {
-    socket.connect();
-  }
+    function connectGameSocket() {
+        gameSocket.connect();
+    }
 
-  function disconnect() {
-    socket.disconnect();
-  }
+    function disconnectGameSocket() {
+        gameSocket.disconnect();
+    }
 
-  return (
-    <>
-      <button onClick={ connect }>Connect</button>
-      <button onClick={ disconnect }>Disconnect</button>
-    </>
-  );
+    function connectLobbySocket() {
+        lobbySocket.connect();
+    }
+
+    function disconnectLobbySocket() {
+        lobbySocket.disconnect();
+    }
+
+    return (
+        <>
+            <button onClick={connectGameSocket}>Connect game socket</button>
+            <button onClick={disconnectGameSocket}>Disconnect game socket</button>
+            <button onClick={connectLobbySocket}>Connect lobby socket</button>
+            <button onClick={disconnectLobbySocket}>Disconnect lobby socket</button>
+
+        </>
+    );
 }
