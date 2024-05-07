@@ -2,7 +2,6 @@ from flask import Blueprint, json
 from flask_socketio import join_room, send, emit
 
 from tictactoe_backend.socketauth import authenticated_only
-
 from tictactoe_backend import socketio
 from tictactoe_backend.gamemanager import GameManager
 
