@@ -1,4 +1,4 @@
-from flask import Blueprint, json
+from flask import Blueprint, json, jsonify, request
 from flask_socketio import join_room, send, emit
 
 from tictactoe_backend.socketauth import authenticated_only
@@ -10,6 +10,7 @@ game_bp = Blueprint("game", __name__)
 
 gameManager = GameManager()
 
+connectedSockets = {} # socketId: {username:"", gameId:""}
 
 def check_win(board):
     win_conditions = [
@@ -30,16 +31,6 @@ def lobbyRequest():
     for gameId, gameObject in gameManager.games.items():
         gameData = {"lobbyId": gameId, "players": gameObject.players}
         games.append(gameData)
-    # data = '''{
-    #             {
-    #               players: ["p1", "p2"],
-    #               lobbyId: "123",
-    #             },
-    #             {
-    #               players: ["p3", "p4"],
-    #               lobbyId: "321",
-    #             }
-    #           }'''
     print(json.dumps(games))
     emit("lobbyList", json.dumps(games))
 
@@ -51,14 +42,17 @@ def onJoin(json):
     gameManager.createGame(gameId)
     gameManager.joinGame(gameId, username)
     join_room(gameId)
+    connectedSockets[request.sid] = {"username": username, "gameId": gameId}
     # send game state and players to joining player
-    send(gameId, to=gameId)
+    data = {"gameState": gameManager.getGame(gameId).board, "players": gameManager.getGame(gameId).players}
+    emit("gameInfo", json.dumps(data), to=gameId)
 
-@socketio.on("disconnectEvent", namespace="/game")
-def onDisconnect(json):
-    gameId = json["gameId"]
-    username = json["username"]
+@socketio.on("disconnect", namespace="/game")
+def onDisconnect():
+    username = connectedSockets[request.sid]["username"]
+    gameId = connectedSockets[request.sid]["gameId"]
     gameManager.leaveGame(gameId, username)
+    print(username, gameId)
 
 
 @socketio.on("turnSubmit", namespace="/game")
@@ -84,10 +78,15 @@ def doTurn(json):
         if check_win(board):
             emit("gameWin", {"winner": "X" if currentPlayer==1 else "0"}, to=gameId)
             emit("gameStateUpdate", {"board": board, "currentPlayer": -1}, to=gameId)
+            gameObject.currentPlayer = -1
             user = User.query.get(gameObject.players[currentPlayer])
             user.wins += 1
             db.session.commit()
             print(user.wins)
+        elif -1 not in board:
+            emit("gameTie", to=gameId)
+            emit("gameStateUpdate", {"board": board, "currentPlayer": -1}, to=gameId)
+            gameObject.currentPlayer = -1
         else:
             # Send updated game state to players
             newPlayer = 1 if currentPlayer==0 else 0
@@ -100,7 +99,6 @@ def sendMessage(json):
     # chat message feature
     # verify player is in room before doing stuff
     gameId = json["gameId"]
-    message = json["message"]
     emit("chatBroadcast", json, to=gameId)
 
 @game_bp.route("/game")

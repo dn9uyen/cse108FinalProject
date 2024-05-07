@@ -12,12 +12,11 @@ export default function Game(props: any) { // TODO: pass game id from lobby
 
     useEffect(() => {
         function onConnect() {
-            gameSocket.emit('joinGame', { gameId: gameId, username: Cookies.get("username") });
+            gameSocket.emit('joinGame', { sid: gameSocket.id, gameId: gameId, username: Cookies.get("username") });
             console.log(gameSocket.connected)
         }
 
         function onDisconnect() {
-            gameSocket.emit("disconnectEvent", { gameId: gameId, username: Cookies.get("username") })
         }
 
         function onChatBroadcast(json: any) {
