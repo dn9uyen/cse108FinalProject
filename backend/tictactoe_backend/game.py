@@ -1,6 +1,5 @@
 from flask import Blueprint, json
 from flask_socketio import join_room, send, emit
-from flask_login import current_user
 
 from tictactoe_backend.socketauth import authenticated_only
 from tictactoe_backend import socketio
@@ -40,7 +39,7 @@ def lobbyRequest():
     #             }
     #           }'''
     print(json.dumps(games))
-    emit(json.dumps(games))
+    emit("lobbyList", json.dumps(games))
 
  
 @socketio.on('joinGame', namespace='/game')
