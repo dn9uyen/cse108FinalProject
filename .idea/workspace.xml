@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f40deaa-6e52-462e-bcf2-f49a90ad03de" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/TicTacToeWebApp/src/pages/Game.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToeWebApp/src/pages/Game.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,23 +72,11 @@
       <option name="presentableId" value="Default" />
       <updated>1715040287396</updated>
       <workItem from="1715040289100" duration="8119000" />
-      <workItem from="1715057767593" duration="6844000" />
+      <workItem from="1715057767593" duration="7205000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/TicTacToeWebApp/src/pages/Game.tsx</url>
-          <line>74</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
