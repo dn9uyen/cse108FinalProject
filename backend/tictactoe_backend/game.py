@@ -1,5 +1,6 @@
 from flask import Blueprint, json
 from flask_socketio import join_room, send, emit
+from flask_login import current_user
 
 from tictactoe_backend.socketauth import authenticated_only
 from tictactoe_backend import socketio
@@ -22,28 +23,40 @@ def check_win(board):
     return False
 
 
-@socketio.on("lobbyRequest", namespace="/lobby")
+@socketio.on("lobbyRequest", namespace="/game")
 def lobbyRequest():
-    data = '''{
-                {
-                  players: ["p1", "p2"],
-                  lobbyId: "123",
-                },
-                {
-                  players: ["p3", "p4"],
-                  lobbyId: "321",
-                }
-              }'''
-    emit(json.loads(data))
+    games = []
+    for gameId, gameObject in gameManager.games.items():
+        gameData = {"lobbyId": gameId, "players": gameObject.players}
+        games.append(gameData)
+    # data = '''{
+    #             {
+    #               players: ["p1", "p2"],
+    #               lobbyId: "123",
+    #             },
+    #             {
+    #               players: ["p3", "p4"],
+    #               lobbyId: "321",
+    #             }
+    #           }'''
+    print(json.dumps(games))
+    emit(json.dumps(games))
 
  
 @socketio.on('joinGame', namespace='/game')
 def onJoin(json):
     gameId = json["gameId"]
     gameManager.createGame(gameId)
+    gameManager.joinGame(gameId, "PUTUSERNAMEHERE")
     join_room(gameId)
     # send game state and players to joining player
     send(gameId, to=gameId)
+
+@socketio.on("disconnectEvent", namespace="/game")
+def onDisconnect(json):
+    gameId = json["gameId"]
+    username = json["username"]
+    gameManager.leaveGame(gameId, username)
 
 
 @socketio.on("turnSubmit", namespace="/game")

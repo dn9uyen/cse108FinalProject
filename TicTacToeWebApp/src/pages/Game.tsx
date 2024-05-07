@@ -15,6 +15,7 @@ export default function Game() {
         }
 
         function onDisconnect() {
+            socket.emit("disconnectEvent", {gameId: gameId, username: "PUTUSERNAMEHERE"})
         }
 
         function onChatBroadcast(json: any) {
@@ -47,6 +48,7 @@ export default function Game() {
             //setBoard(newBoard);
             // Here you may want to emit the new board state to the server
             socket.emit("turnSubmit", { gameId: gameId, moveIndex: index })
+            socket.emit("lobbyRequest")
         }
     }
 
