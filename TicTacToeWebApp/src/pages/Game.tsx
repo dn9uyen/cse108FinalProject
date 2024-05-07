@@ -31,8 +31,8 @@ export default function Game(props: any) { // TODO: pass game id from lobby
             console.log(json["currentPlayer"])
         }
 
-        function onGameInfo(jsonData: any) {
-            const players = jsonData["players"];
+        function onGameInfo(json: any) {
+            const players = JSON.parse(json)["players"];
             if (players && players.length >= 2) {
                 const player1 = players[0];
                 const player2 = players[1];
@@ -47,10 +47,11 @@ export default function Game(props: any) { // TODO: pass game id from lobby
         gameSocket.on('disconnect', onDisconnect);
         gameSocket.on('chatBroadcast', (json) => { onChatBroadcast(json) });
         gameSocket.on('gameStateUpdate', (json) => { onGameStateUpdate(json) });
-        gameSocket.on('gameInfo', (jsonData) => { onGameInfo(jsonData) });
+        gameSocket.on('gameInfo', (json) => { onGameInfo(json) });
 
         gameSocket.connect();
-        console.log(gameSocket.listeners("chatBroadcast"))
+
+        window.onbeforeunload = () => gameSocket.emit('disconnect');
 
         return () => {
             gameSocket.off('connect', onConnect);
