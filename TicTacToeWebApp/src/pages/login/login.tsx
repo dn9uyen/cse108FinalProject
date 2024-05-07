@@ -27,7 +27,7 @@ function Login() {
 
         if (response.status !== 400) {
             setCredentialError(false);
-            navigate("/game");
+            navigate("/lobby");
         } else {
             setCredentialError(true);
         }
