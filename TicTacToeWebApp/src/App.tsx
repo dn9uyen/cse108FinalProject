@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 
 import Login from "./pages/login/login.tsx";
 import Register from "./pages/login/register.tsx";
-import Page from "./pages/testpage/page.tsx";
+import Lobby from "./pages/testpage/lobby.tsx";
 import Game from './pages/Game';
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
                 <Route path="/">
                     <Route index element={<Login />} />
                     <Route path="register" element={<Register />} />
-                    <Route path="page" element={<Page />} />
+                    <Route path="lobby" element={<Lobby />} />
                     <Route path="game" element={<Game />} />
                 </Route>
             </Routes>

@@ -23,7 +23,7 @@ def check_win(board):
     return False
 
 
-@socketio.on("lobbyRequest", namespace="/game")
+@socketio.on("lobbyRequest", namespace="/lobby")
 def lobbyRequest():
     games = []
     for gameId, gameObject in gameManager.games.items():
@@ -40,7 +40,7 @@ def lobbyRequest():
     #             }
     #           }'''
     print(json.dumps(games))
-    emit(json.dumps(games))
+    emit("lobbyList", json.dumps(games))
 
  
 @socketio.on('joinGame', namespace='/game')
