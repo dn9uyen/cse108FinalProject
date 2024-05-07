@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import ChatBox from "../components/ChatBox";
+import BackToLobby from "../components/backButton.tsx";
 import { useEffect, useState } from "react";
 import { gameSocket } from "../socket"
 import Cookies from "js-cookie"
@@ -73,11 +74,15 @@ export default function Game(props: any) { // TODO: pass game id from lobby
 
     return (
         <Box sx={{ display: 'flex', height: '100vh' }}>
+
             <Box sx={{ width: '25%', backgroundColor: '#f0f0f0', padding: '20px' }}>
                 <ChatBox chat={chat} gameId={gameId} />
             </Box>
             <Box sx={{ flexGrow: 1, padding: '20px' }}>
 
+                <Box sx={{ position: 'fixed', bottom: '20px', left: '20px' }}>
+                    <BackToLobby />
+                </Box>
                 <Box sx={{ display: "flex", alignItems: "center", padding: '10px 0', textAlign: 'center', marginBottom: '20px' }}>
                     <Box sx={{ display: "flex", backgroundColor: "#96939B", flexDirection: "column", width: "100%", alignItems: "center", justifyContent: "center", paddingBottom: "15px", textAlign: 'center' }}>
                         <Typography variant="h4" sx={{ color: '#fff', backgroundColor: "black", display: "flex", width: "100%", justifyContent: "center", padding: "10px 0" }}>PLAYER 1</Typography>
@@ -109,6 +114,7 @@ export default function Game(props: any) { // TODO: pass game id from lobby
                             </button>
                         ))}
                     </div>
+
                 </Box>
                 <Box sx={{ padding: '10px 0', textAlign: 'center', marginTop: '20px' }}>
                     <Typography variant="h3" sx={{ color: '#000' }}>TIC TAC TOE</Typography>
